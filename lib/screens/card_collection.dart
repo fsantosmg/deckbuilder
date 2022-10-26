@@ -10,15 +10,13 @@ class CardList extends StatefulWidget {
 
   @override
   State<CardList> createState() => _CardListState();
-
 }
 
-class _CardListState extends State<CardList>{
+class _CardListState extends State<CardList> {
   final MtgCardDao _dao = MtgCardDao();
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Deck name'),
@@ -39,7 +37,10 @@ class _CardListState extends State<CardList>{
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final contact = mtgCards[index];
-                  return _MtgCardItem(contact, onClick: () {},);
+                  return _MtgCardItem(
+                    contact,
+                    onClick: () {},
+                  );
                 },
                 itemCount: mtgCards.length,
               );

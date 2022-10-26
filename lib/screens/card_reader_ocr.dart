@@ -39,11 +39,14 @@ class _CardReaderOcrState extends State<CardReaderOcr> {
 
   @override
   Widget build(BuildContext context) {
+    bool isSaved = true;
+    const saveOkText = 'Card salvo com sucesso!';
+    const saveFailText = 'Não foi possivel salvar o card!';
     return Scaffold(
-      appBar: AppBar(
+      /* appBar: AppBar(
         centerTitle: true,
         title: const Text("Adicionar Carta"),
-      ),
+      ), */
       body: Center(
           child: SingleChildScrollView(
         child: Container(
@@ -188,8 +191,23 @@ class _CardReaderOcrState extends State<CardReaderOcr> {
                       child: SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
-                          onPressed: () => createMtgCard(context),
+                          onPressed: () {
+                            final snackBar = SnackBar(
+                              content:
+                                  Text(isSaved ? saveOkText : saveFailText),
+                              action: SnackBarAction(
+                                label: 'Ok',
+                                onPressed: () {
+                                  isSaved = createMtgCard(context);
+                                },
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
                           child: const Text('Salvar'),
+                          //onPressed: () => createMtgCard(context),
+                          //child: const Text('Salvar'),
                         ),
                       ),
                     )
@@ -201,12 +219,14 @@ class _CardReaderOcrState extends State<CardReaderOcr> {
     );
   }
 
-  void createMtgCard(BuildContext context) {
+  bool createMtgCard(BuildContext context) {
     final MtgCardDao _dao = MtgCardDao();
-    if (scannedCard.printedName.isNotEmpty ) {
-
-      _dao.save(scannedCard).then((id) => Navigator.pop(context));
+    if (scannedCard.printedName.isNotEmpty) {
+      //_dao.save(scannedCard).then((id) => Navigator.pop(context));
+      _dao.save(scannedCard);
+      return true;
     }
+    return false;
   }
 
   void _launchUrl() async {
@@ -254,15 +274,15 @@ class _CardReaderOcrState extends State<CardReaderOcr> {
       cardName = cardName.substring(1, cardName.length);
     }
 
-    try {
+    /*try {
       MagicTheGatheringIo _webClient2 = MagicTheGatheringIo();
       Map<String, dynamic> cardEdit = await _webClient2.findCard(cardName);
       scannedCard = cardEdit['mtgCard'];
       editions = [];
       editions = cardEdit['editions'];
-    } catch (e) {
+    } catch (e) {*/
       scannedCard = await _webClient.findCard(cardName);
-    }
+    //}
     textScanning = false;
     await textDetector.close();
     setState(() {});

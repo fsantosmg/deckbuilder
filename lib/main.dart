@@ -1,5 +1,5 @@
+import 'package:deckbuilder/screens/base_screen.dart';
 import 'package:deckbuilder/screens/card_collection.dart';
-import 'package:deckbuilder/screens/card_reader_ocr.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,12 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue
-      ),
-      home: const CardList(),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const BaseScreen(),
     );
   }
 }
-
-
